@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/users")
+    fetch("http://localhost:5000/user")
       .then((res) => res.json())
-      .then((json) => setUser(json));
+      .then((json) => setUsers(json));
   }, []);
   const addUser = (e) => {
     e.preventDefault();
@@ -16,28 +16,29 @@ function App() {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/users", {
+    fetch("http://localhost:5000/user", {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(users),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
+        // const newUser = [...users, data]
+        // setUsers(newUser)
       });
-  }, [user]);
+  }, [users]);
 
   return (
     <div className="App">
-      <h1>Total User: {user.length}</h1>
+      <h1>Total User: {users.length}</h1>
       <form onSubmit={addUser}>
         <input type="text" name="name" id="" />
         <input type="submit" value="Add User" />
       </form>
       <ul>
-        {user.map((person) => (
+        {users.map((person) => (
           <li key={person.id}>
             {" "}
             {person.id} ~ {person.name}
