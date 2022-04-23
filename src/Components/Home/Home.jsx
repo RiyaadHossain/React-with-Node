@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 const Home = () => {
@@ -10,18 +9,19 @@ const Home = () => {
   }, []);
 
   const deleteUser = (id) => {
-    fetch(`http://localhost:5000/user/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
+    const proceed = window.confirm("Are You Sure");
+    if (proceed) {
+      fetch(`http://localhost:5000/user/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
         .then((data) => {
-            console.log(data);
-            if(data.deletedCount > 0){
-                console.log('deleted');
-                const remaining = users.filter(user => user._id !== id);
-                setUsers(remaining);
-            }
-      });
+          if (data.deletedCount > 0) {
+            const remaining = users.filter((user) => user._id !== id);
+            setUsers(remaining);
+          }
+        });
+    }
   };
 
   return (
